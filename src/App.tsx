@@ -169,6 +169,7 @@ function App() {
   const [pontos, setPontos] = useState<number>(0);
   const [programaSelecionado, setProgramaSelecionado] = useState<number>(0);
   const [perguntaAtual, setPerguntaAtual] = useState<number>(1);
+  const [mostrarPontuacaoFinal, setMostrarPontuacaoFinal] = useState<boolean>(false);
 
   function verificarResposta(resposta: string) {
     const respostaCorreta =
@@ -176,25 +177,41 @@ function App() {
     if (resposta === respostaCorreta) {
       const pontosGanhos = 3 - tentativas;
       setPontos((prev) => prev + pontosGanhos);
-      const audio = new Audio("./certo.mp3"); // ajuste o caminho se necessário
+      const audio = new Audio("./certo.mp3");
       audio.play();
       alert(`Correto! Você ganhou ${pontosGanhos} ponto(s).`);
 
-      // Passa para a próxima pergunta
-      setPerguntaAtual((prev) => prev + 1);
+      // Verifica se é a última pergunta
+      if (perguntaAtual === 30) {
+        setMostrarPontuacaoFinal(true);
+      } else {
+        setPerguntaAtual((prev) => prev + 1);
+      }
       setTentativas(0);
     } else {
-      const audio = new Audio("./errou.mp3"); // ajuste o caminho se necessário
+      const audio = new Audio("./errou.mp3");
       audio.play();
       if (tentativas < 2) {
         setTentativas((prev) => prev + 1);
         alert("Errado! Tente novamente.");
       } else {
         alert(`Resposta errada. A correta era: ${respostaCorreta}`);
-        setPerguntaAtual((prev) => prev + 1);
+        if (perguntaAtual === 30) {
+          setMostrarPontuacaoFinal(true);
+        } else {
+          setPerguntaAtual((prev) => prev + 1);
+        }
         setTentativas(0);
       }
     }
+  }
+
+  function reiniciarJogo() {
+    setProgramaSelecionado(0);
+    setPerguntaAtual(1);
+    setPontos(0);
+    setTentativas(0);
+    setMostrarPontuacaoFinal(false);
   }
 
   return (
@@ -216,7 +233,18 @@ function App() {
       </a>
 
       <div className="flex flex-col w-[90%] max-w-96 items-center justify-center gap-2 border-2 rounded-md p-2 bg-[#f8f4d2] mb-4">
-        {programaSelecionado !== 0 ? (
+        {mostrarPontuacaoFinal ? (
+          <div className="flex flex-col items-center gap-4">
+            <h2 className="text-xl font-bold">Fim do Programa {programaSelecionado}!</h2>
+            <p className="text-lg">Sua pontuação final: {pontos} pontos</p>
+            <button
+              className="w-full border-1 border-gray-300 rounded-md bg-amber-50 p-2 hover:bg-amber-100"
+              onClick={reiniciarJogo}
+            >
+              Voltar ao Menu Principal
+            </button>
+          </div>
+        ) : programaSelecionado !== 0 ? (
           <>
             <div className="flex items-center justify-center gap-2">
               <h2>
