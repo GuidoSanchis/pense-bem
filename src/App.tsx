@@ -170,6 +170,7 @@ function App() {
   const [programaSelecionado, setProgramaSelecionado] = useState<number>(0);
   const [perguntaAtual, setPerguntaAtual] = useState<number>(1);
   const [mostrarPontuacaoFinal, setMostrarPontuacaoFinal] = useState<boolean>(false);
+  const [acertos, setAcertos] = useState<number>(0);
 
   function verificarResposta(resposta: string) {
     const respostaCorreta =
@@ -177,6 +178,7 @@ function App() {
     if (resposta === respostaCorreta) {
       const pontosGanhos = 3 - tentativas;
       setPontos((prev) => prev + pontosGanhos);
+      setAcertos((prev) => prev + 1);
       const audio = new Audio("./certo.mp3");
       audio.play();
       alert(`Correto! Você ganhou ${pontosGanhos} ponto(s).`);
@@ -199,7 +201,7 @@ function App() {
         if (perguntaAtual === 30) {
           setMostrarPontuacaoFinal(true);
         } else {
-          setPerguntaAtual((prev) => prev + 1);
+        setPerguntaAtual((prev) => prev + 1);
         }
         setTentativas(0);
       }
@@ -212,6 +214,7 @@ function App() {
     setPontos(0);
     setTentativas(0);
     setMostrarPontuacaoFinal(false);
+    setAcertos(0);
   }
 
   return (
@@ -237,6 +240,7 @@ function App() {
           <div className="flex flex-col items-center gap-4">
             <h2 className="text-xl font-bold">Fim do Programa {programaSelecionado}!</h2>
             <p className="text-lg">Sua pontuação final: {pontos} pontos</p>
+            <p className="text-lg">Acertos: {acertos} de 30 ({((acertos / 30) * 100).toFixed(1)}%)</p>
             <button
               className="w-full border-1 border-gray-300 rounded-md bg-amber-50 p-2 hover:bg-amber-100"
               onClick={reiniciarJogo}
