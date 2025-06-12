@@ -131,6 +131,38 @@ function App() {
       "A",
       "C",
     ],
+    [
+      "F",
+      "B",
+      "B",
+      "D",
+      "D",
+      "B",
+      "B",
+      "D",
+      "A",
+      "B",
+      "D",
+      "A",
+      "B",
+      "C",
+      "C",
+      "A",
+      "D",
+      "D",
+      "D",
+      "C",
+      "D",
+      "C",
+      "B",
+      "B",
+      "B",
+      "A",
+      "C",
+      "A",
+      "D",
+      "D",
+    ],
   ];
 
   const [tentativas, setTentativas] = useState<number>(0);
@@ -144,7 +176,7 @@ function App() {
     if (resposta === respostaCorreta) {
       const pontosGanhos = 3 - tentativas;
       setPontos((prev) => prev + pontosGanhos);
-      const audio = new Audio("src/assets/certo.mp3"); // ajuste o caminho se necessário
+      const audio = new Audio("./certo.mp3"); // ajuste o caminho se necessário
       audio.play();
       alert(`Correto! Você ganhou ${pontosGanhos} ponto(s).`);
 
@@ -152,7 +184,7 @@ function App() {
       setPerguntaAtual((prev) => prev + 1);
       setTentativas(0);
     } else {
-      const audio = new Audio("src/assets/errou.mp3"); // ajuste o caminho se necessário
+      const audio = new Audio("./errou.mp3"); // ajuste o caminho se necessário
       audio.play();
       if (tentativas < 2) {
         setTentativas((prev) => prev + 1);
@@ -173,7 +205,7 @@ function App() {
         </h1>
       </div>
       <p>Teste seu conhecimento sobre a Fórmula 1</p>
-      <img src="src/assets/capa.png" alt="" className="w-36 " />
+      <img src="./capa.png" alt="" className="w-36 " />
       <a
         href="https://datassette.s3.us-west-004.backblazeb2.com/livros/pense_bem_-_senninha_-_a_historia_da_formula_1.pdf"
         target="_blank"
